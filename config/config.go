@@ -18,8 +18,8 @@ var (
 	RemoteFile  = flag.String("rf", "", "目标文件位置,必须与-t scp 一起执行")
 )
 
-func ParseServers(filepath string) ([]ssh_scp.Host, error) {
-	var hosts []ssh_scp.Host
+func ParseServers(filepath string) ([]ssh_scp.HostInfo, error) {
+	var hosts []ssh_scp.HostInfo
 	file, err := os.Open(filepath)
 	defer file.Close()
 	if err != nil {
@@ -36,7 +36,7 @@ func ParseServers(filepath string) ([]ssh_scp.Host, error) {
 		if err != nil {
 			return nil, err
 		}
-		hosts = append(hosts, ssh_scp.Host{info[0], port, info[2], info[3]})
+		hosts = append(hosts, ssh_scp.HostInfo{info[0], port, info[2], info[3]})
 	}
 	return hosts, nil
 
