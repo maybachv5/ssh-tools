@@ -10,6 +10,7 @@ import (
 	"path"
 	"sync"
 	"time"
+	"io/ioutil"
 )
 
 type HostInfo struct {
@@ -108,13 +109,19 @@ func (s SCP) SCPFun(group *sync.WaitGroup) {
 		return
 	}
 	defer dstFile.Close()
-	buf := make([]byte, 1024)
-	for {
-		n, _ := srcFile.Read(buf)
-		if n == 0 {
-			break
-		}
-		dstFile.Write(buf[0:n])
+	f, err := ioutil.ReadAll(srcFile)
+	if err != nil {
+		fmt.Println(clcolor.Red(err.Error()))
+		return
 	}
+	dstFile.Write(f)
+	//buf := make([]byte, 1024)
+	//for {
+	//	n, _ := srcFile.Read(buf)
+	//	if n == 0 {
+	//		break
+	//	}
+	//	dstFile.Write(buf[0:n])
+	//}
 
 }
